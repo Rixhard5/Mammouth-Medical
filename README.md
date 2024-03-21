@@ -8,4 +8,4 @@
 
 2. [**Google Firebase**](https://firebase.google.com) | for storing data
 
-3. [**Github**](https://github.com/Rixhard5/Mammouth-Medical/edit/main/README.md) | version control
+3. [**Github**](https://github.com/Rixhard5/Mammouth-Medical) | version control
