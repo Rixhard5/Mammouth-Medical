@@ -29,7 +29,7 @@
         android:layout_marginTop="88dp"
         android:backgroundTint="@color/yellowishOpaque"
         android:fontFamily="@font/nunito_bold"
-        android:onClick="gotoShopPage"
+        android:onClick="loginAnonymously"
         android:text="@string/begin"
         android:textColor="@color/navyBlue"
         android:textSize="@dimen/text_size_button_regular"
@@ -46,7 +46,6 @@
         android:layout_marginTop="92dp"
         android:backgroundTint="@color/redishOpaque"
         android:fontFamily="@font/nunito_regular"
-        android:onClick="login"
         android:text="@string/login"
         android:textColor="@color/navyBlue"
         android:textSize="@dimen/text_size_button_regular"
@@ -55,6 +54,11 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/beginButton" />
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <Button
         android:id="@+id/googleLoginButton"

@@ -2,10 +2,11 @@ package com.example.mammouthmedicalpharmacyapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Objects;
 
+import com.example.mammouthmedicalpharmacyapp.ui.login.LoginFragment;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
@@ -27,9 +29,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getName();
-    private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
     private static final int SECRET_KEY = 55;
-    private SharedPreferences preferences;
     private FirebaseAuth firebaseAuthInstance;
     private GoogleSignInClient googleSignInClientInstance;
 
@@ -44,8 +44,22 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         firebaseAuthInstance = FirebaseAuth.getInstance();
+
+        Button loginButton = findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener(v -> {
+            LoginFragment loginFragment = new LoginFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.anim01, 0)
+                    .add(R.id.fragmentContainer, loginFragment)
+                    .addToBackStack(null)
+                    .commit();
+            FrameLayout fragmentContainer = findViewById(R.id.fragmentContainer);
+            fragmentContainer.bringToFront();
+        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("254412408509-emcn8s9uf77v94b0rmd9v3bf00ekeeua.apps.googleusercontent.com")
@@ -87,10 +101,6 @@ public class MainActivity extends AppCompatActivity {
         // startActivity(intent);
     }
 
-    public void login(View view) {
-        // TODO:
-    }
-
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -109,22 +119,21 @@ public class MainActivity extends AppCompatActivity {
         activityResultLauncher.launch(signInIntent);
     }
 
+    public void loginAnonymously(View view) {
+        firebaseAuthInstance.signInAnonymously().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                Log.d(LOG_TAG, "User login anonymously!");
+                gotoShopPage();
+            } else {
+                Log.d(LOG_TAG, "User login anonymously failed!");
+                Toast.makeText(MainActivity.this, "User login anonymously failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("SECRET_KEY", SECRET_KEY);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // TODO:
-        SharedPreferences.Editor editor = preferences.edit();
-        // editor.putString("userName", userNameET.getText().toString());
-        // editor.putString("password", passwordET.getText().toString());
-        editor.apply();
-
-        Log.i(LOG_TAG, "onPause");
     }
 }

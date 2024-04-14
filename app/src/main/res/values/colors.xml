@@ -9,4 +9,5 @@
     <color name="redishOpaque">#B3DA4D4D</color>
     <color name="navyBlue">#000080</color>
     <color name="lightBlue">#0FA8A8</color>
+    <color name="lightBlueOpaque">#F20FA8A8</color>
 </resources>
