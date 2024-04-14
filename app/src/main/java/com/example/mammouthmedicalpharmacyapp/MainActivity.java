@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.*;
@@ -27,7 +28,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getName();
     private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
-    private static final int RC_SIGN_IN = 44;
     private static final int SECRET_KEY = 55;
     private SharedPreferences preferences;
     private FirebaseAuth firebaseAuthInstance;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuthInstance = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("254412408509-rkjau79gfjrsutdi65t58mika6cvqntt.apps.googleusercontent.com")
+                .requestIdToken("254412408509-emcn8s9uf77v94b0rmd9v3bf00ekeeua.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         googleSignInClientInstance = GoogleSignIn.getClient(this, gso);
@@ -56,13 +56,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        // Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.d(LOG_TAG, "Account id with google login:" + account.getId());
+            Toast.makeText(MainActivity.this, "Google login successful: " + account.getEmail(), Toast.LENGTH_LONG).show();
             firebaseAuthWithGoogle(account.getIdToken());
         } catch (ApiException e) {
             Log.w(LOG_TAG, "Google sign in failed: ", e);
+            Toast.makeText(MainActivity.this, "Google login failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -97,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent data = result.getData();
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                     handleSignInResult(task);
+                } else {
+                    Toast.makeText(MainActivity.this, "Internal program error: " + result.getResultCode(), Toast.LENGTH_LONG).show();
                 }
             }
     );
