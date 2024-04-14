@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MammouthMedicalPharmacyApp</string>
+    <string name="title01">Mammouth Medical</string>
+    <string name="begin">Begin Shopping</string>
+    <string name="login">Login</string>
+    <string name="loginwithgoogle">Login With Google Account</string>
+    <string name="register">Register Account</string>
 </resources>
