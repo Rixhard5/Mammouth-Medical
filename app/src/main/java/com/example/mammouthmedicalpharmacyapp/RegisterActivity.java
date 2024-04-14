@@ -1,5 +1,6 @@
 package com.example.mammouthmedicalpharmacyapp;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,14 +14,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mammouthmedicalpharmacyapp.ui.login.LoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String LOG_TAG = RegisterActivity.class.getName();
-    private static final String PREF_KEY = Objects.requireNonNull(RegisterActivity.class.getPackage()).toString();
-    private static final int SECRET_KEY = 55;
+    private static final String PREF_KEY = Objects.requireNonNull(LoginFragment.class.getPackage()).toString();
 
     EditText usernameEditText;
     EditText emailEditText;
@@ -28,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordAgainEditText;
     EditText phoneEditText;
     EditText addressEditText;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuthInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         phoneEditText = findViewById(R.id.phoneEditText);
         addressEditText = findViewById(R.id.addressEditText);
 
-        SharedPreferences preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
         String username = preferences.getString("username", "");
         String password = preferences.getString("password", "");
 
@@ -62,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText.setText(password);
         passwordAgainEditText.setText(password);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuthInstance = FirebaseAuth.getInstance();
 
     }
 
@@ -77,12 +78,12 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        String phone = phoneEditText.getText().toString();
+        // String phone = phoneEditText.getText().toString();
         // TODO: store other data
 
         Log.i(LOG_TAG, "Registered user: " + username + ", email: " + email);
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+        firebaseAuthInstance.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 Log.d(LOG_TAG, "User created successfully in Firebase Database.");
                 gotoShopPage();
