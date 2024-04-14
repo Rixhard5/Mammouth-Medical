@@ -1,5 +1,6 @@
 package com.example.mammouthmedicalpharmacyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,7 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_TAG = MainActivity.class.getName();
+    private static final String PREF_KEY = Objects.requireNonNull(MainActivity.class.getPackage()).toString();
+    private static final int SECRET_KEY = 55;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
     }
 
     public void gotoShopPage(View view) {
@@ -36,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
-        // TODO:
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("SECRET_KEY", SECRET_KEY);
+        startActivity(intent);
     }
 }

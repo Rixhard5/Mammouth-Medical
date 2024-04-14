@@ -1,8 +1,19 @@
 <resources>
+    <!-- Common texts -->
     <string name="app_name">MammouthMedicalPharmacyApp</string>
     <string name="title01">Mammouth Medical</string>
     <string name="begin">Begin Shopping</string>
+    <string name="go">Go!</string>
     <string name="login">Login</string>
-    <string name="loginwithgoogle">Login With Google Account</string>
+    <string name="login_with_google">Login With Google Account</string>
     <string name="register">Register Account</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Register common -->
+    <string name="user_name">Username</string>
+    <string name="email_address">E-mail address</string>
+    <string name="password">Password</string>
+    <string name="password_again">Password again</string>
+    <string name="phone_number">Phone number</string>
+    <string name="address">Home address</string>
 </resources>
