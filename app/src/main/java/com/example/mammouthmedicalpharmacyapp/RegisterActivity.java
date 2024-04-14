@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordAgainEditText;
     EditText phoneEditText;
     EditText addressEditText;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuthInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText.setText(password);
         passwordAgainEditText.setText(password);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuthInstance = FirebaseAuth.getInstance();
 
     }
 
@@ -82,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Log.i(LOG_TAG, "Registered user: " + username + ", email: " + email);
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+        firebaseAuthInstance.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 Log.d(LOG_TAG, "User created successfully in Firebase Database.");
                 gotoShopPage();
