@@ -4,5 +4,8 @@
     <color name="grey">#6D6D6D</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellowish">#E19F3D</color>
+    <color name="yellowishOpaque">#B3E19F3D</color>
     <color name="redish">#DA4D4D</color>
+    <color name="redishOpaque">#B3DA4D4D</color>
+    <color name="navyBlue">#000080</color>
 </resources>
