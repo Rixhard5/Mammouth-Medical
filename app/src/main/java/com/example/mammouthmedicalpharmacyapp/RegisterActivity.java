@@ -1,6 +1,7 @@
 package com.example.mammouthmedicalpharmacyapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuthInstance.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 Log.d(LOG_TAG, "User created successfully in Firebase Database.");
+                Toast.makeText(RegisterActivity.this, "Registration successful, logged in as: " + username, Toast.LENGTH_LONG).show();
                 gotoShopPage();
             } else {
                 Log.d(LOG_TAG, "Error while creating user!");
@@ -99,8 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void gotoShopPage() {
-        // TODO:
-        // Intent intent = new Intent(this, ShopListActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(this, MainShopList.class);
+        startActivity(intent);
     }
 }

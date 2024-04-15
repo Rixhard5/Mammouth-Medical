@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.*;
 
+import com.example.mammouthmedicalpharmacyapp.MainShopList;
 import com.example.mammouthmedicalpharmacyapp.databinding.FragmentLoginBinding;
 
 import com.example.mammouthmedicalpharmacyapp.R;
@@ -151,6 +153,7 @@ public class LoginFragment extends Fragment {
         firebaseAuthInstance.signInWithEmailAndPassword(username, password).addOnCompleteListener(requireActivity(), task -> {
             if (task.isSuccessful()) {
                 Log.d(LOG_TAG, "User logged in successfully");
+                Toast.makeText(requireActivity(), "User logged in successfully: " + username, Toast.LENGTH_LONG).show();
                 gotoShopPage();
             } else {
                 Log.d(LOG_TAG, "User login error");
@@ -160,9 +163,8 @@ public class LoginFragment extends Fragment {
     }
 
     public void gotoShopPage() {
-        // TODO: create ShopPage component
-        // Intent intent = new Intent(this, ShopListActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(requireActivity(), MainShopList.class);
+        startActivity(intent);
     }
 
     @Override
