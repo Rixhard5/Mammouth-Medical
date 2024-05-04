@@ -7,7 +7,9 @@
     <string name="login">Login</string>
     <string name="login_with_google">Login With Google Account</string>
     <string name="register">Register Account</string>
+    <string name="update">Update User Info</string>
     <string name="cancel">Cancel</string>
+    <string name="remove">Delete Profile</string>
 
     <!-- Register common -->
     <string name="user_name">Username</string>

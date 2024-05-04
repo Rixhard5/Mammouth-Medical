@@ -77,10 +77,10 @@ public class RegisterActivity extends AppCompatActivity {
         addressEditText = findViewById(R.id.addressEditText);
 
         SharedPreferences preferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        String username = preferences.getString("username", "");
+        String email = preferences.getString("email", "");
         String password = preferences.getString("password", "");
 
-        usernameEditText.setText(username);
+        emailEditText.setText(email);
         passwordEditText.setText(password);
         passwordAgainEditText.setText(password);
 
