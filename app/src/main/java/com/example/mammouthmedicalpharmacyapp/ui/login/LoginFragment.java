@@ -32,7 +32,7 @@ public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
-    private EditText usernameEditText;
+    private EditText emailEditText;
     private EditText passwordEditText;
     private SharedPreferences preferences;
     private FirebaseAuth firebaseAuthInstance;
@@ -52,16 +52,16 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        usernameEditText = view.findViewById(R.id.emailEditText);
+        emailEditText = view.findViewById(R.id.emailEditText);
         passwordEditText = view.findViewById(R.id.passwordEditText);
         Button loginButton1 = view.findViewById(R.id.loginButton);
 
         preferences = requireActivity().getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
 
-        String username = preferences.getString("username", "");
+        String email = preferences.getString("email", "");
         String password = preferences.getString("password", "");
 
-        usernameEditText.setText(username);
+        emailEditText.setText(email);
         passwordEditText.setText(password);
 
         firebaseAuthInstance = FirebaseAuth.getInstance();
@@ -148,7 +148,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void loginLogic() {
-        String username = usernameEditText.getText().toString();
+        String username = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         firebaseAuthInstance.signInWithEmailAndPassword(username, password).addOnCompleteListener(requireActivity(), task -> {
             if (task.isSuccessful()) {
@@ -178,7 +178,7 @@ public class LoginFragment extends Fragment {
         super.onPause();
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("username", usernameEditText.getText().toString());
+        editor.putString("email", emailEditText.getText().toString());
         editor.putString("password", passwordEditText.getText().toString());
         editor.apply();
 
