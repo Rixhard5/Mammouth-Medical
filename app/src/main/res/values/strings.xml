@@ -21,4 +21,11 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be filled</string>
     <string name="login_failed">"Login failed"</string>
+
+    <!-- Menu Items -->
+    <string name="home_page">"Home Page"</string>
+    <string name="shopping_page">"Main Shopping Page"</string>
+    <string name="shopping_cart">"Shopping Cart"</string>
+    <string name="profile">"Profile"</string>
+    <string name="logout">"Logout"</string>
 </resources>
