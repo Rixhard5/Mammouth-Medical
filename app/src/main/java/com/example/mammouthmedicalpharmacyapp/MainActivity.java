@@ -96,9 +96,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoShopPage() {
-        // TODO: create ShopPage component
-        // Intent intent = new Intent(this, ShopListActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(this, MainShopList.class);
+        startActivity(intent);
     }
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
