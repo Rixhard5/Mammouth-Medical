@@ -29,7 +29,7 @@
         android:layout_marginTop="88dp"
         android:backgroundTint="@color/yellowishOpaque"
         android:fontFamily="@font/nunito_bold"
-        android:onClick="loginAnonymously"
+        android:onClick="gotoShopPage"
         android:text="@string/begin"
         android:textColor="@color/navyBlue"
         android:textSize="@dimen/text_size_button_regular"

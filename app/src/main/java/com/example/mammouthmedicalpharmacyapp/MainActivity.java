@@ -17,8 +17,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.Objects;
-
 import com.example.mammouthmedicalpharmacyapp.ui.login.LoginFragment;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
@@ -118,16 +116,9 @@ public class MainActivity extends AppCompatActivity {
         activityResultLauncher.launch(signInIntent);
     }
 
-    public void loginAnonymously(View view) {
-        firebaseAuthInstance.signInAnonymously().addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                Log.d(LOG_TAG, "User login anonymously!");
-                gotoShopPage();
-            } else {
-                Log.d(LOG_TAG, "User login anonymously failed!");
-                Toast.makeText(MainActivity.this, "User login anonymously failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+    public void gotoShopPage(View view) {
+        Log.d(LOG_TAG, "Anonymous entry!");
+        gotoShopPage();
     }
 
     public void register(View view) {
