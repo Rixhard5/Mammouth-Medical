@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,8 +18,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class MainShopList extends AppCompatActivity {
-    private static final String LOG_TAG = MainShopList.class.getName();
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
@@ -30,13 +30,13 @@ public class MainShopList extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        Log.d(LOG_TAG, "FIREBASE USER: " + firebaseUser);
+        Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.shopping_page);
         if (firebaseUser == null) {
-            menu.removeItem(R.id.profile);
-            menu.removeItem(R.id.shopping_cart);
-            menu.removeItem(R.id.logout);
+            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.profile);
+            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.shopping_cart);
+            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.logout);
         } else {
-            menu.removeItem(R.id.home_page);
+            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.home_page);
         }
 
         return true;
@@ -45,34 +45,20 @@ public class MainShopList extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        Intent intent;
         if (itemId == R.id.home_page) {
-            intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        } else if (itemId == R.id.shopping_page) {
-            intent = new Intent(this, MainShopList.class);
-            startActivity(intent);
-            return true;
+            startNewActivity(MainActivity.class);
         } else if (itemId == R.id.shopping_cart) {
-            intent = new Intent(this, ShoppingCart.class);
-            startActivity(intent);
-            return true;
+            startNewActivity(ShoppingCart.class);
         } else if (itemId == R.id.profile) {
-            intent = new Intent(getApplicationContext(), Profile.class);
-            startActivity(intent);
-            return true;
+            startNewActivity(Profile.class);
         } else if (itemId == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
-            intent = new Intent(getApplicationContext(), MainActivity.class);
             Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
-            startActivity(intent);
-            finish();
-            return true;
+            startNewActivity(MainActivity.class);
         } else {
             return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -81,7 +67,7 @@ public class MainShopList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main_shop_list);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.shopListActivity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -90,7 +76,12 @@ public class MainShopList extends AppCompatActivity {
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Mammouth Medical");
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setOverflowIcon(getDrawable(R.drawable.baseline_menu_24));
         setSupportActionBar(toolbar);
+    }
+
+    private void startNewActivity(Class<?> destinationClass) {
+        Intent intent = new Intent(getApplicationContext(), destinationClass);
+        startActivity(intent);
+        finish();
     }
 }
