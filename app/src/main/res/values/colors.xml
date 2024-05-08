@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="grey">#6D6D6D</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="yellowish">#E19F3D</color>
+    <color name="yellowishOpaque">#B3E19F3D</color>
+    <color name="redish">#DA4D4D</color>
+    <color name="red">#FF0000</color>
+    <color name="redishOpaque">#B3DA4D4D</color>
+    <color name="navyBlue">#000080</color>
+    <color name="lightBlue">#0FA8A8</color>
+    <color name="lightBlueOpaque">#F20FA8A8</color>
 </resources>

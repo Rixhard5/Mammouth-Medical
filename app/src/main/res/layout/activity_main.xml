@@ -5,15 +5,94 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background02"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/mainTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nunito_bold"
+        android:text="@string/title01"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_h1"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/beginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:backgroundTint="@color/yellowishOpaque"
+        android:fontFamily="@font/nunito_bold"
+        android:onClick="gotoShopPage"
+        android:text="@string/begin"
+        android:textColor="@color/navyBlue"
+        android:textSize="@dimen/text_size_button_regular"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:backgroundTint="@color/redishOpaque"
+        android:fontFamily="@font/nunito_regular"
+        android:text="@string/login"
+        android:textColor="@color/navyBlue"
+        android:textSize="@dimen/text_size_button_regular"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beginButton" />
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/googleLoginButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/redishOpaque"
+        android:fontFamily="@font/nunito_regular"
+        android:onClick="loginWithGoogle"
+        android:text="@string/login_with_google"
+        android:textColor="@color/navyBlue"
+        android:textSize="@dimen/text_size_button_regular"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
+        tools:ignore="OnClick" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/yellowishOpaque"
+        android:fontFamily="@font/nunito_regular"
+        android:onClick="register"
+        android:text="@string/register"
+        android:textColor="@color/navyBlue"
+        android:textSize="@dimen/text_size_button_regular"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

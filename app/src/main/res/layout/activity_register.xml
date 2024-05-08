@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registerActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/registerAccTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:fontFamily="@font/nunito_bold"
+        android:text="@string/register"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_h2" />
+
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registerAccTextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="10dp"
+        android:autofillHints="Username"
+        android:ems="10"
+        android:hint="@string/user_name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/default_margin_side"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="@dimen/default_margin_side"
+        android:autofillHints="Email address"
+        android:ems="10"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emailEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/default_margin_side"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="@dimen/default_margin_side"
+        android:autofillHints="Password"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/passwordAgainEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/default_margin_side"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="@dimen/default_margin_side"
+        android:autofillHints="Password again"
+        android:ems="10"
+        android:hint="@string/password_again"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordAgainEditText"
+        android:layout_marginLeft="@dimen/default_margin_side"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="@dimen/default_margin_side"
+        android:autofillHints="Phone number"
+        android:ems="10"
+        android:hint="@string/phone_number"
+        android:inputType="phone" />
+
+
+    <EditText
+        android:id="@+id/addressEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/phoneEditText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/default_margin_side"
+        android:layout_marginTop="@dimen/register_margin_top"
+        android:layout_marginRight="@dimen/default_margin_side"
+        android:autofillHints="Home address"
+        android:ems="10"
+        android:hint="@string/address"
+        android:inputType="textMultiLine|textPostalAddress"
+        android:maxLines="3" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addressEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/beginButtonOnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/yellowish"
+            android:fontFamily="@font/nunito_bold"
+            android:onClick="register"
+            android:text="@string/go"
+            android:textColor="@color/navyBlue"
+            android:textSize="@dimen/text_size_button_regular"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/cancelButtonOnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/redish"
+            android:fontFamily="@font/nunito_bold"
+            android:onClick="cancel"
+            android:text="@string/cancel"
+            android:textColor="@color/navyBlue"
+            android:textSize="@dimen/text_size_button_regular" />
+    </LinearLayout>
+
+</RelativeLayout>
