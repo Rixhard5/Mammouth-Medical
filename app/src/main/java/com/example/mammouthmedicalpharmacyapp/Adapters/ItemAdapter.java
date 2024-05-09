@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.example.mammouthmedicalpharmacyapp.MainShopList;
 import com.example.mammouthmedicalpharmacyapp.Model.Item;
 import com.example.mammouthmedicalpharmacyapp.R;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -27,8 +26,8 @@ import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> implements Filterable {
     private ArrayList<Item> itemsData;
-    private ArrayList<Item> itemsDataAll;
-    private Context context;
+    private final ArrayList<Item> itemsDataAll;
+    private final Context context;
     private int lastPosition = -1;
 
     public ItemAdapter(Context context, ArrayList<Item> itemsData) {
@@ -66,7 +65,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
         return filter;
     }
 
-    private Filter filter = new Filter() {
+    private final Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             ArrayList<Item> filteredList = new ArrayList<>();
@@ -99,10 +98,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
     };
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView titleText;
-        private TextView detailText;
-        private TextView priceText;
-        private ImageView itemImage;
+        private final TextView titleText;
+        private final TextView detailText;
+        private final TextView priceText;
+        private final ImageView itemImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

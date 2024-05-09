@@ -2,7 +2,6 @@ package com.example.mammouthmedicalpharmacyapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,14 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mammouthmedicalpharmacyapp.Adapters.ItemAdapter;
 import com.example.mammouthmedicalpharmacyapp.Model.Item;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
