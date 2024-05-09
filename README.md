@@ -10,4 +10,4 @@
 
 3. [**Github**](https://github.com/Rixhard5/Mammouth-Medical) | version control
 
-4. [**Medical item references from:**](https://www.chemistdirect.co.uk)
+4. **Medical item references from:** [Chemistdirect](https://www.chemistdirect.co.uk)
