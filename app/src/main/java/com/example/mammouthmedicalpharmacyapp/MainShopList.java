@@ -2,8 +2,10 @@ package com.example.mammouthmedicalpharmacyapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,21 +16,40 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mammouthmedicalpharmacyapp.Adapters.ItemAdapter;
+import com.example.mammouthmedicalpharmacyapp.Model.Item;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainShopList extends AppCompatActivity {
+    private static final String LOG_TAG = MainShopList.class.getName();
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    FirebaseFirestore firebaseFirestoreDb;
+    CollectionReference pharmacyItemsRef;
+
+    private RecyclerView recyclerView;
+    private ArrayList<Item> itemList;
+    private ItemAdapter itemAdapter;
+
+    private int gridNumber = 1;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
 
         Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.shopping_page);
         if (firebaseUser == null) {
@@ -73,10 +94,74 @@ public class MainShopList extends AppCompatActivity {
             return insets;
         });
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseFirestoreDb = FirebaseFirestore.getInstance();
+        pharmacyItemsRef = firebaseFirestoreDb.collection("PharmacyItems");
+
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Mammouth Medical");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
+        itemList = new ArrayList<>();
+
+        itemAdapter = new ItemAdapter(this, itemList);
+        recyclerView.setAdapter(itemAdapter);
+
+        initilizeData();
+    }
+
+    private void initilizeData() {
+        pharmacyItemsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<String> idList = new ArrayList<>();
+                List<String> itemsTitle = new ArrayList<>();
+                List<String> itemsDescription = new ArrayList<>();
+                List<String> itemsPrice = new ArrayList<>();
+                List<String> itemsCategory = new ArrayList<>();
+                List<String> itemsImageResource = new ArrayList<>();
+
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    idList.add(document.getString("itemId"));
+                    itemsTitle.add(document.getString("name"));
+                    itemsDescription.add(document.getString("details"));
+                    itemsPrice.add(document.getString("price"));
+                    itemsCategory.add(document.getString("category"));
+                    itemsImageResource.add(document.getString("imageResource"));
+                }
+
+                itemList.clear();
+
+                String[] itemsIdArray = idList.toArray(new String[0]);
+                String[] itemsTitleArray = itemsTitle.toArray(new String[0]);
+                String[] itemsDescriptionArray = itemsDescription.toArray(new String[0]);
+                String[] itemsPriceArray = itemsPrice.toArray(new String[0]);
+                String[] itemsCategoryArray = itemsCategory.toArray(new String[0]);
+                String[] itemsImageResourceArray = itemsImageResource.toArray(new String[0]);
+
+                for (int i = 0; i < itemsTitleArray.length; i++) {
+                    itemList.add(
+                            new Item(
+                                    itemsIdArray[i],
+                                    itemsTitleArray[i],
+                                    itemsDescriptionArray[i],
+                                    itemsCategoryArray[i],
+                                    itemsPriceArray[i],
+                                    itemsImageResourceArray[i]
+                            )
+                    );
+                }
+
+                itemAdapter.notifyDataSetChanged();
+            } else {
+                Log.d(LOG_TAG, "Error getting documents: ", task.getException());
+            }
+        });
+
+
     }
 
     private void startNewActivity(Class<?> destinationClass) {

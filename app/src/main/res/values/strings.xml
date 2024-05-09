@@ -30,4 +30,11 @@
     <string name="shopping_cart">"Shopping Cart"</string>
     <string name="profile">"Profile"</string>
     <string name="logout">"Logout"</string>
+
+    <!-- ShopList and Items -->
+    <string name="item_image_content">Content</string>
+    <string name="item_placeholder">Item</string>
+    <string name="item_info_placeholder">Item info</string>
+    <string name="to_cart">Add to cart</string>
+    <string name="delete_item">Delete item</string>
 </resources>
