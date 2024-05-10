@@ -111,7 +111,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
             priceText = itemView.findViewById(R.id.itemPrice);
             itemImage = itemView.findViewById(R.id.itemImage);
 
-            itemView.findViewById(R.id.addToCart).setOnClickListener(v -> Log.d("Activity", "Add to cart clicked!"));
+            itemView.findViewById(R.id.addToCart).setOnClickListener(v -> {
+                ((MainShopList) context).updateAlertIcon();
+            });
         }
 
         public void bindTo(Item currentItem) {

@@ -3,15 +3,22 @@ package com.example.mammouthmedicalpharmacyapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -41,42 +48,12 @@ public class MainShopList extends AppCompatActivity {
     private ArrayList<Item> itemList;
     private ItemAdapter itemAdapter;
 
+    private FrameLayout redCircle;
+    private TextView contextTextView;
+
     private int gridNumber = 1;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
-
-        Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.shopping_page);
-        if (firebaseUser == null) {
-            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.profile);
-            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.shopping_cart);
-            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.logout);
-        } else {
-            Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.home_page);
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.home_page) {
-            startNewActivity(MainActivity.class);
-        } else if (itemId == R.id.shopping_cart) {
-            startNewActivity(ShoppingCart.class);
-        } else if (itemId == R.id.profile) {
-            startNewActivity(Profile.class);
-        } else if (itemId == R.id.logout) {
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
-            startNewActivity(MainActivity.class);
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
+    private int cartItems = 0;
+    private boolean viewRow = true;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -108,6 +85,103 @@ public class MainShopList extends AppCompatActivity {
         recyclerView.setAdapter(itemAdapter);
 
         initilizeData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_page);
+        if (firebaseUser == null) {
+            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
+            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.logout);
+        } else {
+            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.home_page);
+        }
+
+        MenuItem searchItem = menu.findItem(R.id.search_bar);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        assert searchView != null;
+        ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_button);
+        EditText searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        ImageView closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+        searchIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        searchText.setTextColor(Color.WHITE);
+        searchText.setHintTextColor(Color.WHITE);
+        closeButton.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                itemAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.home_page) {
+            startNewActivity(MainActivity.class);
+        } else if (itemId == R.id.shopping_cart) {
+            startNewActivity(ShoppingCart.class);
+        } else if (itemId == R.id.profile) {
+            startNewActivity(Profile.class);
+        } else if (itemId == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
+            startNewActivity(MainActivity.class);
+        } else if (itemId == R.id.view_selector) {
+            if (viewRow) {
+                changeSpanCount(item, R.drawable.baseline_view_module_24, 1);
+            } else {
+                changeSpanCount(item, R.drawable.baseline_view_agenda_24, 2);
+            }
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void changeSpanCount(MenuItem item, int drawableId, int spanCount) {
+        viewRow = !viewRow;
+        item.setIcon(drawableId);
+        GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+        layoutManager.setSpanCount(spanCount);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem alertMenuItem = Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).findItem(R.id.shopping_cart);
+        FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
+
+        assert rootView != null;
+        redCircle = (FrameLayout) rootView.findViewById(R.id.alert_circle);
+        contextTextView = (TextView) rootView.findViewById(R.id.alert_text);
+
+        rootView.setOnClickListener(v -> onOptionsItemSelected(alertMenuItem));
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void updateAlertIcon() {
+        cartItems = (cartItems + 1);
+        if (0 < cartItems) {
+            contextTextView.setText(String.valueOf(cartItems));
+        } else {
+            contextTextView.setText("");
+        }
+
+        redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
     }
 
     private void initilizeData() {
@@ -156,8 +230,6 @@ public class MainShopList extends AppCompatActivity {
                 Log.d(LOG_TAG, "Error getting documents: ", task.getException());
             }
         });
-
-
     }
 
     private void startNewActivity(Class<?> destinationClass) {

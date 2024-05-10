@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shopListActivity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/lightBlueOpaque"
     tools:context=".Model.Item">
 
     <RelativeLayout
@@ -70,18 +72,6 @@
                 android:fontFamily="@font/nunito_bold"
                 android:text="@string/to_cart"
                 android:textColor="@color/navyBlue" />
-
-            <Button
-                android:id="@+id/delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/red"
-                android:fontFamily="@font/nunito_bold"
-                android:text="@string/delete_item"
-                android:textColor="@color/black" />
         </LinearLayout>
-
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
