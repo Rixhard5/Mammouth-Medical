@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
+        android:id="@+id/search_bar"
+        android:icon="@drawable/baseline_search_24"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/view_selector"
+        android:icon="@drawable/baseline_view_module_24"
+        android:title="@string/view_selector"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/other_items"
         android:icon="@drawable/baseline_menu_24"
-        android:title=""
+        android:title="@string/other"
         app:showAsAction="ifRoom">
 
         <menu>
@@ -21,6 +38,7 @@
                 android:id="@+id/shopping_cart"
                 android:icon="@drawable/baseline_shopping_cart_24"
                 android:title="@string/shopping_cart"
+                app:actionLayout="@layout/custom_cart"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/profile"

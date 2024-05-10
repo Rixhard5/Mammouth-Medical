@@ -5,6 +5,7 @@
     <dimen name="text_size_h1">34sp</dimen>
     <dimen name="text_size_h2">28sp</dimen>
     <dimen name="text_size_h3">20sp</dimen>
+    <dimen name="text_size_small">10sp</dimen>
     <!-- Paddings -->
     <dimen name="padding_regular">15dp</dimen>
     <!-- Margins -->
