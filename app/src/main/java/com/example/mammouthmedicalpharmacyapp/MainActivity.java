@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -52,11 +51,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.anim01, 0)
-                    .add(R.id.fragmentContainer, loginFragment)
+                    .replace(R.id.fragmentContainer, loginFragment)
                     .addToBackStack(null)
                     .commit();
-            FrameLayout fragmentContainer = findViewById(R.id.fragmentContainer);
-            fragmentContainer.bringToFront();
         });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
