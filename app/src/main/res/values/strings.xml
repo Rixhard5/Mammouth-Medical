@@ -25,9 +25,34 @@
     <string name="login_failed">"Login failed"</string>
 
     <!-- Menu Items -->
+    <string name="search">Search</string>
+    <string name="other">Other</string>
+    <string name="view_selector">Select view</string>
+
+    <string name="default_cart_item_count">1</string>
     <string name="home_page">"Home Page"</string>
     <string name="shopping_page">"Main Shopping Page"</string>
     <string name="shopping_cart">"Shopping Cart"</string>
     <string name="profile">"Profile"</string>
     <string name="logout">"Logout"</string>
+
+    <!-- ShopList and Items -->
+    <string name="item_image_content">Content</string>
+    <string name="item_placeholder">Item</string>
+    <string name="item_info_placeholder">Item info</string>
+    <string name="to_cart">Add to cart</string>
+    <string name="delete_item">Delete item</string>
+
+    <!-- Categories -->
+    <string name="line">---------------------------------</string>
+    <string name="category_firstAid">First Aid</string>
+    <string name="category_hayFever">Hay Fever</string>
+    <string name="category_coldEtc">Cold &amp; Cough &amp; Flu</string>
+    <string name="category_thrushTre">Thrush Treatment</string>
+    <string name="category_travelMed">Travel Medicine</string>
+
+    <!-- Cart -->
+    <string name="count">Count: </string>
+    <string name="minus_one">-1</string>
+    <string name="clear_cart">Clear cart</string>
 </resources>

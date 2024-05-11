@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,32 +38,6 @@ public class Profile extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
-        Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.home_page);
-        Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.profile);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.shopping_page) {
-            startNewActivity(MainShopList.class);
-        } else if (itemId == R.id.shopping_cart) {
-            startNewActivity(ShoppingCart.class);
-        } else if (itemId == R.id.logout) {
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
-            startNewActivity(MainActivity.class);
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -103,10 +78,61 @@ public class Profile extends AppCompatActivity {
                 });
     }
 
-    private void startNewActivity(Class<?> destinationClass) {
-        Intent intent = new Intent(getApplicationContext(), destinationClass);
-        startActivity(intent);
-        finish();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        SubMenu subMenu = Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu());
+        int[] itemIds = {
+                R.id.category_firstAid,
+                R.id.category_coldEtc,
+                R.id.category_hayFever,
+                R.id.category_thrushTre,
+                R.id.category_travelMed,
+                R.id.separator,
+                R.id.home_page,
+                R.id.profile,
+                R.id.clear_cart
+        };
+
+        int[] menuItemsInUse = {
+                R.id.shopping_page,
+                R.id.shopping_cart,
+                R.id.logout
+        };
+
+        for (int id : itemIds) {
+            subMenu.removeItem(id);
+        }
+        if (firebaseUser == null) {
+            subMenu.removeItem(R.id.shopping_cart);
+        }
+        menu.removeItem(R.id.search_bar);
+        menu.removeItem(R.id.view_selector);
+
+        for (int id : menuItemsInUse) {
+            if (menu.findItem(id) != null) {
+                MainActivity.setMenuIconColor(menu.findItem(id), this);
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.shopping_page) {
+            startNewActivity(MainShopList.class);
+        } else if (itemId == R.id.shopping_cart) {
+            startNewActivity(ShoppingCart.class);
+        } else if (itemId == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
+            startNewActivity(MainActivity.class);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     public void remove(View view) {
@@ -156,5 +182,11 @@ public class Profile extends AppCompatActivity {
 
     public void cancel(View view) {
         startNewActivity(MainShopList.class);
+    }
+
+    private void startNewActivity(Class<?> destinationClass) {
+        Intent intent = new Intent(getApplicationContext(), destinationClass);
+        startActivity(intent);
+        finish();
     }
 }
