@@ -1,9 +1,14 @@
 package com.example.mammouthmedicalpharmacyapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,6 +17,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.*;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -122,5 +129,24 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("SECRET_KEY", SECRET_KEY);
         startActivity(intent);
+    }
+
+    public static void setMenuIconColor(MenuItem menuItem, Context context) {
+        Drawable icon = menuItem.getIcon();
+        int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            try {
+                icon.setTint(Color.WHITE);
+            } catch (NullPointerException e) {
+                Log.w(LOG_TAG, "Error setting the color: " + e.getMessage());
+            }
+        } else {
+            try {
+                icon.setTint(Color.BLACK);
+            } catch (NullPointerException e) {
+                Log.w(LOG_TAG, "Error setting the color: " + e.getMessage());
+            }
+        }
+        menuItem.setIcon(icon);
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -95,15 +96,35 @@ public class MainShopList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        SubMenu subMenu = Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu());
 
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_page);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.clear_cart);
+        int[] menuItemsInUse = {
+                R.id.category_firstAid,
+                R.id.category_hayFever,
+                R.id.category_coldEtc,
+                R.id.category_thrushTre,
+                R.id.category_travelMed,
+                R.id.shopping_cart,
+                R.id.separator,
+                R.id.profile,
+                R.id.logout,
+                R.id.home_page
+        };
+
+        subMenu.removeItem(R.id.shopping_page);
+        subMenu.removeItem(R.id.clear_cart);
         if (firebaseUser == null) {
-            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
-            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.logout);
-            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_cart);
+            subMenu.removeItem(R.id.profile);
+            subMenu.removeItem(R.id.logout);
+            subMenu.removeItem(R.id.shopping_cart);
         } else {
-            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.home_page);
+            subMenu.removeItem(R.id.home_page);
+        }
+
+        for (int id : menuItemsInUse) {
+            if (menu.findItem(id) != null) {
+                MainActivity.setMenuIconColor(menu.findItem(id), this);
+            }
         }
 
         MenuItem searchItem = menu.findItem(R.id.search_bar);
