@@ -48,21 +48,26 @@ Ezeket az adatokat lehet *frissíteni* is (kivéve email címet, azonosítás é
 <br>
 
 #### Lifecycle Hook-ok:
-  - LoginFragment onPause(): beállítja a *SharedPreferences* értékét
-  - LoginFragment onDestroyView(): leállítja a fregmens működését
+  - LoginFragment `onPause()`: beállítja a *SharedPreferences* értékét
+  - LoginFragment `onDestroyView()`: leállítja a fregmens működését
 <br>
 
 #### Permission erőforrás - Értesítés:
-  - INTERNET
-  - POST_NOTIFICATIONS: sikeres regisztráció esetén értesítést kapunk
+  - `INTERNET`
+  - `POST_NOTIFICATIONS`: sikeres regisztráció esetén értesítést kapunk
 <br>
 
 #### CRUD Műveletek:
-  -Create: felhasználó létrehozás, egy termék kosárba rakása
-  -Read: felhasználó adatainak lekérése, termékek lekérése, kosár elemek lekérése
-  -Update: felhasználó adatainak frissítése, kosárból egy elem törlése frissíti az adott termék darabszámát
-  -Delete: felhasználó törlése, termék törlése a kosárból
+  - `Create`: felhasználó létrehozás, egy termék kosárba rakása
+  - `Read`: felhasználó adatainak lekérése, termékek lekérése, kosár elemek lekérése
+  - `Update`: felhasználó adatainak frissítése, kosárból egy elem törlése frissíti az adott termék darabszámát
+  - `Delete`: felhasználó törlése, termék törlése a kosárból
 <br>
+
+#### Complex Firestore lekérdezések:
+  - `Szűrés`: `whereEqualTo` van használva olyan helyeken, ahol feltétel szerinti szűrés van alkalmazva
+  - `Rendezés`: név szerinti rendezés kategória szűrés esetén
+  - `Limitálás`: kategória szűrés esetén `5`-re van limitálva az eredmény
 ___
 
 > ### EN
@@ -96,20 +101,26 @@ These user datas can also be *updated* (except the email address) and they can a
 <br>
 
 #### Lifecycle Hooks:
-  - LoginFragment onPause(): sets *SharedPreferences*
-  - LoginFragment onDestroyView(): destroys the fragment
+  - LoginFragment `onPause()`: sets *SharedPreferences*
+  - LoginFragment `onDestroyView()`: destroys the fragment
 <br>
 
 #### Permission - Notification:
-  - INTERNET
-  - POST_NOTIFICATIONS: we get a notification if the registration was successful
+  - `INTERNET`
+  - `POST_NOTIFICATIONS`: we get a notification if the registration was successful
 <br>
 
 #### CRUD Operations:
-  -Create: user creation, putting an item to the cart
-  -Read: reading user data, reading products, reading cart items
-  -Update: updating user data, removing an item from the basket updates the database
-  -Delete: deleting user, removing item from cart
+  - `Create`: user creation, putting an item to the cart
+  - `Read`: reading user data, reading products, reading cart items
+  - `Update`: updating user data, removing an item from the basket updates the database
+  - `Delete`: deleting user, removing item from cart
+<br>
+
+#### Complex Firestore queries:
+  - `Filter`: `whereEqualTo` is usually used in the code where category filtering is present
+  - `OrderBy`: ordering by name when filtering by category
+  - `Limit`: limiting the result by `5` when filtering by category
 <br>
 
 ___
