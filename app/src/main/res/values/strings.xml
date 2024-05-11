@@ -1,6 +1,6 @@
 <resources>
     <!-- Common texts -->
-    <string name="app_name">MammouthMedicalPharmacyApp</string>
+    <string name="app_name">Mammouth Medical</string>
     <string name="title01">Mammouth Medical</string>
     <string name="begin">Begin Shopping</string>
     <string name="go">Go!</string>
