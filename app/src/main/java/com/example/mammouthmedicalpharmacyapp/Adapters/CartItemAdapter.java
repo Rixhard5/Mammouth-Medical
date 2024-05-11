@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.mammouthmedicalpharmacyapp.MainShopList;
 import com.example.mammouthmedicalpharmacyapp.Model.CartItem;
 import com.example.mammouthmedicalpharmacyapp.R;
 import com.example.mammouthmedicalpharmacyapp.ShoppingCart;
@@ -22,7 +21,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder> {
     private ArrayList<CartItem> cartItems;
