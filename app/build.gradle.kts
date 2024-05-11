@@ -36,24 +36,30 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.ui.storage)
-    implementation(libs.play.services.auth)
-    implementation(libs.annotation)
-    implementation(libs.lifecycle.livedata.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.firebase.firestore)
-    compileOnly(libs.lombok)
-    annotationProcessor(libs.lombok)
-    implementation(libs.glide)
-    annotationProcessor(libs.glide)
+    // Lib Main
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
+
+    // Androidx
+    implementation(libs.activity)
+    implementation(libs.annotation)
+    implementation(libs.appcompat)
+    implementation(libs.constraintlayout)
     androidTestImplementation(libs.espresso.core)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+
+    // Firebase + Google
+    implementation(libs.firebase.auth)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.ui.storage)
+    implementation(libs.material)
+    implementation(libs.play.services.auth)
+
+    // Other
+    implementation(libs.glide)
+    annotationProcessor(libs.glide)
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 }
