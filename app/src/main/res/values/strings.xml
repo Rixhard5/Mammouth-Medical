@@ -50,6 +50,9 @@
     <string name="category_coldEtc">Cold &amp; Cough &amp; Flu</string>
     <string name="category_thrushTre">Thrush Treatment</string>
     <string name="category_travelMed">Travel Medicine</string>
+
+    <!-- Cart -->
     <string name="count">Count: </string>
     <string name="minus_one">-1</string>
+    <string name="clear_cart">Clear cart</string>
 </resources>

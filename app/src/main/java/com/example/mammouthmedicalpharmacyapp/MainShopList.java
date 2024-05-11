@@ -97,6 +97,7 @@ public class MainShopList extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
 
         Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_page);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.clear_cart);
         if (firebaseUser == null) {
             Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
             Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.logout);
