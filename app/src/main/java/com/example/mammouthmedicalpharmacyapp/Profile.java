@@ -38,32 +38,6 @@ public class Profile extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
-        Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.home_page);
-        Objects.requireNonNull(menu.getItem(0).getSubMenu()).removeItem(R.id.profile);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.shopping_page) {
-            startNewActivity(MainShopList.class);
-        } else if (itemId == R.id.shopping_cart) {
-            startNewActivity(ShoppingCart.class);
-        } else if (itemId == R.id.logout) {
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
-            startNewActivity(MainActivity.class);
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +77,41 @@ public class Profile extends AppCompatActivity {
                 });
     }
 
-    private void startNewActivity(Class<?> destinationClass) {
-        Intent intent = new Intent(getApplicationContext(), destinationClass);
-        startActivity(intent);
-        finish();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_firstAid);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_coldEtc);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_hayFever);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_thrushTre);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_travelMed);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.separator);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.home_page);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
+        if (firebaseUser == null) {
+            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_cart);
+        }
+        menu.removeItem(R.id.search_bar);
+        menu.removeItem(R.id.view_selector);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.shopping_page) {
+            startNewActivity(MainShopList.class);
+        } else if (itemId == R.id.shopping_cart) {
+            startNewActivity(ShoppingCart.class);
+        } else if (itemId == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
+            startNewActivity(MainActivity.class);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     public void remove(View view) {
@@ -156,5 +161,11 @@ public class Profile extends AppCompatActivity {
 
     public void cancel(View view) {
         startNewActivity(MainShopList.class);
+    }
+
+    private void startNewActivity(Class<?> destinationClass) {
+        Intent intent = new Intent(getApplicationContext(), destinationClass);
+        startActivity(intent);
+        finish();
     }
 }
