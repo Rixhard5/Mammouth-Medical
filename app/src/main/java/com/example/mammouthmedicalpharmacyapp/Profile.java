@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -80,16 +81,24 @@ public class Profile extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_firstAid);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_coldEtc);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_hayFever);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_thrushTre);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_travelMed);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.separator);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.home_page);
-        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
+        SubMenu subMenu = Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu());
+        int[] itemIds = {
+                R.id.category_firstAid,
+                R.id.category_coldEtc,
+                R.id.category_hayFever,
+                R.id.category_thrushTre,
+                R.id.category_travelMed,
+                R.id.separator,
+                R.id.home_page,
+                R.id.profile,
+                R.id.clear_cart
+        };
+
+        for (int id : itemIds) {
+            subMenu.removeItem(id);
+        }
         if (firebaseUser == null) {
-            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_cart);
+            subMenu.removeItem(R.id.shopping_cart);
         }
         menu.removeItem(R.id.search_bar);
         menu.removeItem(R.id.view_selector);
