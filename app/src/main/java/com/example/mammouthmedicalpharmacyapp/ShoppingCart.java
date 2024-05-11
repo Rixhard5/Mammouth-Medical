@@ -40,7 +40,6 @@ public class ShoppingCart extends AppCompatActivity {
     FirebaseFirestore firebaseFirestoreDb;
     CollectionReference cartRef;
 
-    private RecyclerView recyclerView;
     private CartItemAdapter cartItemAdapter;
     private ArrayList<CartItem> cartItems;
 
@@ -65,7 +64,7 @@ public class ShoppingCart extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartItems = new ArrayList<>();
 
@@ -142,7 +141,7 @@ public class ShoppingCart extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String itemId = document.getString("itemId");
                             String userId = document.getString("userId");
-                            Integer itemCount = Math.toIntExact(document.getLong("itemCount"));
+                            Integer itemCount = document.getLong("itemCount").intValue();
 
                             firebaseFirestoreDb.collection("PharmacyItems")
                                     .whereEqualTo("itemId", itemId)
@@ -172,7 +171,6 @@ public class ShoppingCart extends AppCompatActivity {
                         Log.w(LOG_TAG, "Error getting documents.", task.getException());
                     }
                 });
-
     }
 
     private void startNewActivity(Class<?> destinationClass) {
