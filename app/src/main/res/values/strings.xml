@@ -42,4 +42,14 @@
     <string name="item_info_placeholder">Item info</string>
     <string name="to_cart">Add to cart</string>
     <string name="delete_item">Delete item</string>
+
+    <!-- Categories -->
+    <string name="line">---------------------------------</string>
+    <string name="category_firstAid">First Aid</string>
+    <string name="category_hayFever">Hay Fever</string>
+    <string name="category_coldEtc">Cold &amp; Cough &amp; Flu</string>
+    <string name="category_thrushTre">Thrush Treatment</string>
+    <string name="category_travelMed">Travel Medicine</string>
+    <string name="count">Count: </string>
+    <string name="minus_one">-1</string>
 </resources>

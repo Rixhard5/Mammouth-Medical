@@ -11,6 +11,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,8 @@ import com.bumptech.glide.Glide;
 import com.example.mammouthmedicalpharmacyapp.MainShopList;
 import com.example.mammouthmedicalpharmacyapp.Model.Item;
 import com.example.mammouthmedicalpharmacyapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -110,10 +113,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
             detailText = itemView.findViewById(R.id.itemDetails);
             priceText = itemView.findViewById(R.id.itemPrice);
             itemImage = itemView.findViewById(R.id.itemImage);
-
-            itemView.findViewById(R.id.addToCart).setOnClickListener(v -> {
-                ((MainShopList) context).updateAlertIcon();
-            });
         }
 
         public void bindTo(Item currentItem) {
@@ -131,6 +130,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
                 Log.d(MainShopList.class.getName(), "Error while loading the image: " + e.getMessage());
             });
 
+            itemView.findViewById(R.id.addToCart).setOnClickListener(v -> {
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser == null) {
+                    Toast.makeText(context.getApplicationContext(), "You need to log in to add items to the cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((MainShopList) context).updateAlertIcon();
+                    ((MainShopList) context).addToCart(currentItem);
+                }
+            });
         }
     }
 }
