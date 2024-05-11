@@ -91,11 +91,24 @@ public class ShoppingCart extends AppCompatActivity {
                 R.id.shopping_cart
         };
 
+        int[] menuItemsInUse = {
+                R.id.shopping_page,
+                R.id.shopping_cart,
+                R.id.profile,
+                R.id.logout
+        };
+
         for (int id : itemIds) {
             subMenu.removeItem(id);
         }
         menu.removeItem(R.id.search_bar);
         menu.removeItem(R.id.view_selector);
+
+        for (int id : menuItemsInUse) {
+            if (menu.findItem(id) != null) {
+                MainActivity.setMenuIconColor(menu.findItem(id), this);
+            }
+        }
 
         return true;
     }
