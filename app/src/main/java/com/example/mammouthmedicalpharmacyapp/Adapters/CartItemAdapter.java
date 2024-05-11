@@ -23,7 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder> {
-    private ArrayList<CartItem> cartItems;
+    private final ArrayList<CartItem> cartItems;
     private int lastPosition = -1;
     private final Context context;
 
@@ -75,22 +75,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             itemCount.setText(String.valueOf(currentItem.getItemCount()));
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference((currentItem.getImageResource()));
-            storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                Glide.with(context)
-                        .load(uri.toString())
-                        .error(R.mipmap.image_not_found)
-                        .into(itemImage);
-            }).addOnFailureListener(e -> {
-                Log.d(ShoppingCart.class.getName(), "Error while loading the image: " + e.getMessage());
-            });
+            storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
+                    .load(uri.toString())
+                    .error(R.mipmap.image_not_found)
+                    .into(itemImage)).addOnFailureListener(e -> Log.d(ShoppingCart.class.getName(), "Error while loading the image: " + e.getMessage()));
 
-            itemView.findViewById(R.id.deleteItemButton).setOnClickListener(view -> {
-                ((ShoppingCart) context).deleteCartItem(currentItem);
-            });
+            itemView.findViewById(R.id.deleteItemButton).setOnClickListener(view -> ((ShoppingCart) context).deleteCartItem(currentItem));
 
-            itemView.findViewById(R.id.deleteOneButton).setOnClickListener(view -> {
-                ((ShoppingCart) context).deleteOneItem(currentItem);
-            });
+            itemView.findViewById(R.id.deleteOneButton).setOnClickListener(view -> ((ShoppingCart) context).deleteOneItem(currentItem));
         }
     }
 }

@@ -9,11 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -54,11 +51,6 @@ public class MainShopList extends AppCompatActivity {
     private ArrayList<Item> itemList;
     private ItemAdapter itemAdapter;
 
-    private FrameLayout redCircle;
-    private TextView contextTextView;
-
-    private int gridNumber = 1;
-    private int cartItems = 0;
     private boolean viewRow = true;
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -77,6 +69,7 @@ public class MainShopList extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseFirestoreDb = FirebaseFirestore.getInstance();
         pharmacyItemsRef = firebaseFirestoreDb.collection("PharmacyItems");
+        cartRef = firebaseFirestoreDb.collection("Cart");
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Mammouth Medical");
@@ -84,6 +77,7 @@ public class MainShopList extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         recyclerView = findViewById(R.id.recyclerView);
+        int gridNumber = 1;
         recyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
         itemList = new ArrayList<>();
 
@@ -218,34 +212,11 @@ public class MainShopList extends AppCompatActivity {
         viewRow = !viewRow;
         item.setIcon(drawableId);
         GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-        layoutManager.setSpanCount(spanCount);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem alertMenuItem = menu.findItem(R.id.other_items).getSubMenu().findItem(R.id.shopping_cart);
-        if (alertMenuItem != null) {
-            FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
-
-            assert rootView != null;
-            redCircle = (FrameLayout) rootView.findViewById(R.id.alert_circle);
-            contextTextView = (TextView) rootView.findViewById(R.id.alert_text);
-
-            rootView.setOnClickListener(v -> onOptionsItemSelected(alertMenuItem));
+        try {
+            layoutManager.setSpanCount(spanCount);
+        } catch (NullPointerException e) {
+            Log.w(LOG_TAG, "Layout not found: " + e.getMessage());
         }
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    public void updateAlertIcon() {
-        cartItems = (cartItems + 1);
-        if (0 < cartItems) {
-            contextTextView.setText(String.valueOf(cartItems));
-        } else {
-            contextTextView.setText("");
-        }
-
-        redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
     }
 
     private void initilizeData() {
@@ -303,8 +274,6 @@ public class MainShopList extends AppCompatActivity {
     }
 
     public void addToCart(Item currentItem) {
-        cartRef = firebaseFirestoreDb.collection("Cart");
-
         cartRef.whereEqualTo("itemId", currentItem.getItemId())
                 .get()
                 .addOnCompleteListener(task -> {

@@ -121,21 +121,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> im
             priceText.setText(currentItem.getPrice());
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference((currentItem.getImageResource()));
-            storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                Glide.with(context)
-                        .load(uri.toString())
-                        .error(R.mipmap.image_not_found)
-                        .into(itemImage);
-            }).addOnFailureListener(e -> {
-                Log.d(MainShopList.class.getName(), "Error while loading the image: " + e.getMessage());
-            });
+            storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(context)
+                    .load(uri.toString())
+                    .error(R.mipmap.image_not_found)
+                    .into(itemImage)).addOnFailureListener(e -> Log.d(MainShopList.class.getName(), "Error while loading the image: " + e.getMessage()));
 
             itemView.findViewById(R.id.addToCart).setOnClickListener(v -> {
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 if (firebaseUser == null) {
                     Toast.makeText(context.getApplicationContext(), "You need to log in to add items to the cart", Toast.LENGTH_SHORT).show();
                 } else {
-                    ((MainShopList) context).updateAlertIcon();
                     ((MainShopList) context).addToCart(currentItem);
                 }
             });
