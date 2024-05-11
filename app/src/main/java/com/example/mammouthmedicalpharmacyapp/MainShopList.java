@@ -30,11 +30,15 @@ import com.example.mammouthmedicalpharmacyapp.Model.Item;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainShopList extends AppCompatActivity {
@@ -43,6 +47,7 @@ public class MainShopList extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestoreDb;
     CollectionReference pharmacyItemsRef;
+    CollectionReference cartRef;
 
     private RecyclerView recyclerView;
     private ArrayList<Item> itemList;
@@ -95,6 +100,7 @@ public class MainShopList extends AppCompatActivity {
         if (firebaseUser == null) {
             Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
             Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.logout);
+            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_cart);
         } else {
             Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.home_page);
         }
@@ -127,10 +133,44 @@ public class MainShopList extends AppCompatActivity {
         return true;
     }
 
+    private void updateItemList(String category) {
+        Query query = pharmacyItemsRef.whereEqualTo("category", category)
+                .orderBy("name")
+                .limit(5);
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                itemList.clear();
+                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                    itemList.add(
+                            new Item(
+                                    Objects.requireNonNull(documentSnapshot.getData().get("itemId")).toString(),
+                                    Objects.requireNonNull(documentSnapshot.getData().get("name")).toString(),
+                                    Objects.requireNonNull(documentSnapshot.getData().get("details")).toString(),
+                                    Objects.requireNonNull(documentSnapshot.getData().get("category")).toString(),
+                                    Objects.requireNonNull(documentSnapshot.getData().get("price")).toString(),
+                                    Objects.requireNonNull(documentSnapshot.getData().get("imageResource")).toString()
+                            )
+                    );
+                }
+                itemAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.home_page) {
+        if (itemId == R.id.category_firstAid) {
+            updateItemList("first_aid");
+        } else if (itemId == R.id.category_coldEtc) {
+            updateItemList("cold_cough_flu");
+        } else if (itemId == R.id.category_hayFever) {
+            updateItemList("hay_fever");
+        } else if (itemId == R.id.category_thrushTre) {
+            updateItemList("thrush_treatment");
+        } else if (itemId == R.id.category_travelMed) {
+            updateItemList("travel_medicine");
+        } else if (itemId == R.id.home_page) {
             startNewActivity(MainActivity.class);
         } else if (itemId == R.id.shopping_cart) {
             startNewActivity(ShoppingCart.class);
@@ -161,14 +201,16 @@ public class MainShopList extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem alertMenuItem = Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).findItem(R.id.shopping_cart);
-        FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
+        final MenuItem alertMenuItem = menu.findItem(R.id.other_items).getSubMenu().findItem(R.id.shopping_cart);
+        if (alertMenuItem != null) {
+            FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
 
-        assert rootView != null;
-        redCircle = (FrameLayout) rootView.findViewById(R.id.alert_circle);
-        contextTextView = (TextView) rootView.findViewById(R.id.alert_text);
+            assert rootView != null;
+            redCircle = (FrameLayout) rootView.findViewById(R.id.alert_circle);
+            contextTextView = (TextView) rootView.findViewById(R.id.alert_text);
 
-        rootView.setOnClickListener(v -> onOptionsItemSelected(alertMenuItem));
+            rootView.setOnClickListener(v -> onOptionsItemSelected(alertMenuItem));
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -236,5 +278,33 @@ public class MainShopList extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), destinationClass);
         startActivity(intent);
         finish();
+    }
+
+    public void addToCart(Item currentItem) {
+        cartRef = firebaseFirestoreDb.collection("Cart");
+
+        cartRef.whereEqualTo("itemId", currentItem.getItemId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                cartRef.document(document.getId())
+                                        .update("itemCount", FieldValue.increment(1));
+                            }
+                        } else {
+                            Map<String, Object> cartItem = new HashMap<>();
+                            cartItem.put("itemId", currentItem.getItemId());
+                            cartItem.put("itemCount", 1);
+                            cartItem.put("userId", firebaseUser.getUid());
+
+                            cartRef.add(cartItem);
+                        }
+                        Toast.makeText(MainShopList.this, "Item added successfully to cart!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.w(LOG_TAG, "Error getting documents.", task.getException());
+                    }
+                });
+
     }
 }
