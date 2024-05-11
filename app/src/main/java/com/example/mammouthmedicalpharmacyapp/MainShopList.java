@@ -203,7 +203,7 @@ public class MainShopList extends AppCompatActivity {
             Toast.makeText(this, "Logged out successfully!", Toast.LENGTH_LONG).show();
             startNewActivity(MainActivity.class);
         } else if (itemId == R.id.view_selector) {
-            if (viewRow) {
+            if (!viewRow) {
                 changeSpanCount(item, R.drawable.baseline_view_module_24, 1);
             } else {
                 changeSpanCount(item, R.drawable.baseline_view_agenda_24, 2);
