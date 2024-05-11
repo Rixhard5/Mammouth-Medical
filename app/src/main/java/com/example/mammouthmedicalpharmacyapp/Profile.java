@@ -80,8 +80,17 @@ public class Profile extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_firstAid);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_coldEtc);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_hayFever);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_thrushTre);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.category_travelMed);
+        Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.separator);
         Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.home_page);
         Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.profile);
+        if (firebaseUser == null) {
+            Objects.requireNonNull(menu.findItem(R.id.other_items).getSubMenu()).removeItem(R.id.shopping_cart);
+        }
         menu.removeItem(R.id.search_bar);
         menu.removeItem(R.id.view_selector);
 
