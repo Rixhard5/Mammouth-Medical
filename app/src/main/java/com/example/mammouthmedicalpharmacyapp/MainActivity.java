@@ -22,6 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mammouthmedicalpharmacyapp.Model.User;
 import com.example.mammouthmedicalpharmacyapp.ui.login.LoginFragment;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
@@ -29,11 +30,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getName();
     private static final int SECRET_KEY = 55;
     private FirebaseAuth firebaseAuthInstance;
+    FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+    CollectionReference userRef;
     private GoogleSignInClient googleSignInClientInstance;
 
     @Override
@@ -49,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         firebaseAuthInstance = FirebaseAuth.getInstance();
+        userRef = firestoreDb.collection("Users");
 
         Button loginButton = findViewById(R.id.loginButton);
 
@@ -74,6 +82,21 @@ public class MainActivity extends AppCompatActivity {
     public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            Query query = userRef.whereEqualTo("email", account.getEmail()).limit(1);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    if (querySnapshot.isEmpty()) {
+                        User registeredGoogleUser = new User(account.getId(), account.getEmail().split("@")[0], account.getEmail(), "", "");
+                        firestoreDb.collection("Users")
+                                .add(registeredGoogleUser)
+                                .addOnSuccessListener(documentReference -> Log.d(LOG_TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
+                                .addOnFailureListener(e -> Log.w(LOG_TAG, "Error adding document", e));
+                    }
+                }
+            });
+
             Log.d(LOG_TAG, "Account id with google login:" + account.getId());
             Toast.makeText(MainActivity.this, "Google login successful: " + account.getEmail(), Toast.LENGTH_LONG).show();
             firebaseAuthWithGoogle(account.getIdToken());
