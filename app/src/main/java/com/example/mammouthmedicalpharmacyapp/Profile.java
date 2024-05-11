@@ -21,8 +21,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Objects;
 
@@ -38,6 +40,7 @@ public class Profile extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+    CollectionReference cartRef;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -63,6 +66,7 @@ public class Profile extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        cartRef = firestoreDb.collection("Cart");
 
         firestoreDb.collection("Users").whereEqualTo("email", firebaseUser.getEmail()).get()
                 .addOnCompleteListener(task -> {
@@ -144,7 +148,24 @@ public class Profile extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(LOG_TAG, "User account deleted.");
+                        clearCart();
                         deleteFirestoreUserDocument();
+                    }
+                });
+    }
+
+    private void clearCart() {
+        cartRef.whereEqualTo("userId", firebaseUser.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        WriteBatch writeBatch = firestoreDb.batch();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            writeBatch.delete(document.getReference());
+                        }
+                        writeBatch.commit();
+                    } else {
+                        Log.w(LOG_TAG, "Error getting the document: " + task.getException());
                     }
                 });
     }
